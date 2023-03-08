@@ -1,0 +1,74 @@
+#install.packages("roxygen2")
+library(roxygen2)
+
+
+devtools::install(build = T, upgrade = "never")
+
+devtools::build()
+devtools::install()
+devtools::document()
+
+
+library(MultiplicativeRandomCascade)
+
+# example data set
+head(data_test_MRC)
+
+?get_scaling_params_Intensity_aggLevel
+
+# get scaling params Model A 
+Model_A = get_scaling_params_Intensity_aggLevel(vecPrecip = data_test_MRC$obs,
+                                                vecDates = data_test_MRC$date)
+
+Model_A$params
+Model_A$fig_plots
+
+
+
+Model_B = get_scaling_params_Intensity(vecPrecip = data_test_MRC$obs,
+                                       vecDates = data_test_MRC$date)
+
+Model_B$params
+Model_B$fig_plots
+
+# ================= to disaggregate =================  
+
+# a vector of dates, a date per day 
+vecDates_target = unique(as.Date(data_test_MRC$date))
+
+?get_indices_center_1280
+
+# get 1280 min indices 
+indices_1280min = get_indices_center_1280(length(vecDates_target))
+
+# from 10 minutes time series to "daily - 1280 min" accumulated time series 
+vecPrecip_target = sum_fixed_window(x = data_test_MRC$obs[indices_1280min],
+                                    k = 128)
+
+
+
+Moldel_A_disagg = disaggregate_precip_MRC_Intensity_aggLevel(vecPrecip_target = vecPrecip_target,
+                                                             vecDates_target = vecDates_target,
+                                                             params_scaling = Model_A$params,
+                                                             res_coarse_aggLevel = 1280,
+                                                             res_fine_aggLevel = 40,
+                                                             nb_scenarios = 10,
+                                                             asymmetry_option = F)
+
+head(Moldel_A_disagg)
+
+Moldel_A_disagg_asymm = disaggregate_precip_MRC_Intensity_aggLevel(vecPrecip_target = vecPrecip_target,
+                                                             vecDates_target = vecDates_target,
+                                                             params_scaling = Model_A$params,
+                                                             res_coarse_aggLevel = 1280,
+                                                             res_fine_aggLevel = 40,
+                                                             nb_scenarios = 10,
+                                                             asymmetry_option = T)
+
+Moldel_B_disagg = disaggregate_precip_MRC_Intensity(vecPrecip_target = vecPrecip_target,
+                                                    vecDates_target = vecDates_target,
+                                                    params_scaling = Model_B$params,
+                                                    res_coarse_aggLevel = 1280,
+                                                    res_fine_aggLevel = 40,
+                                                    nb_scenarios = 10,
+                                                    asymmetry_option = T)

@@ -1,0 +1,25 @@
+Package: MultiplicativeRandomCascade
+Type: Package
+Date: 2023-02-23
+License: GPL-3
+Title: Microcanonical Random Cascade - a temporal disaggregation approach of precipitation
+Version: 1.0.0
+Authors@R: c(person("Kaltrina","Maloku",role = c("aut", "cre"),email="kaltrina.maloku@univ-grenoble-alpes.fr"))
+Author: Kaltrina Maloku [aut, cre]
+Maintainer: Kaltrina Maloku <kaltrina.maloku@univ-grenoble-alpes.fr>
+Imports: RcppRoll, lubridate, stats, dplyr, magrittr, pracma, robustbase, viridis, ggplot2, latex2exp
+Description: Microcanonical Random Cascade is a method for temporal disaggregation of precipitation time series 
+  from coarse resolution (e.g. daily) to fine resolution (e.g. 30 min). 
+  This package provide tools for parameter estimation of this model, estimation of scaling models, with different options 
+  for dependency, and tools for disaggregation based on these parameters and dependencies. 
+  Possible dependcy options are: precipition intensity, temoral aggregation level and asymmetery of precipitation sequence.
+  Fictive precipition data for a station are also provided.
+  The user is suggested to refer to these papers for more details on the models. 
+  - Rupp, D. E., Keim, R. F., Ossiander, M., Brugnach, M., and Selker, J. S. (2009) <https://doi.org/10.1029/2008WR007321>.
+  - Maloku, K., B. Hingray and Evin, G. (2023) <to_do>.
+Depends: R (>= 2.10)
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.2.3
+
+
